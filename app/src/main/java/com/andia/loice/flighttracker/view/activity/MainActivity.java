@@ -1,6 +1,8 @@
-package com.andia.loice.flighttracker;
+package com.andia.loice.flighttracker.view.activity;
 
 import android.os.Bundle;
+
+import com.andia.loice.flighttracker.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
