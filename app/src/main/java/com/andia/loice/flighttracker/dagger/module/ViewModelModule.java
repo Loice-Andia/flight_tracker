@@ -15,7 +15,7 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(FlightScheduleListViewModel.class)
-    abstract ViewModel bindsFlightScheduleListViewModel(FlightScheduleListViewModel movieListViewModel);
+    abstract ViewModel bindsFlightScheduleListViewModel(FlightScheduleListViewModel flightScheduleListViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindsViewModelFactory(ViewModelFactory viewModelFactory);

@@ -44,13 +44,7 @@ public class MainActivity extends AppCompatActivity {
         returnDate = activityMainBinding.returnDate;
         submitBtn = activityMainBinding.submitBtn;
 
-        submitBtn.setEnabled(false);
-
         initListeners();
-
-        if (!source.isEmpty() && !dest.isEmpty() && !deptDate.isEmpty())
-            submitBtn.setEnabled(true);
-
 
     }
 
@@ -115,18 +109,17 @@ public class MainActivity extends AppCompatActivity {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH))
                     .show();
-            updateLabel(travelDate);
+            updateLabel(returnDate);
         });
-        
+
         submitBtn.setOnClickListener(v -> {
             if (source.isEmpty() && dest.isEmpty() && deptDate.isEmpty()) {
-                submitBtn.setEnabled(false);
                 Snackbar.make(activityMainBinding.inputView,
                         R.string.empty_text_prompt,
                         Snackbar.LENGTH_LONG)
                         .show();
             } else {
-                Intent intent = new Intent(this, FlightListActivity.class);
+                Intent intent = new Intent(MainActivity.this, FlightListActivity.class);
                 intent.putExtra("SOURCE", source);
                 intent.putExtra("DESt", dest);
                 intent.putExtra("DEPARTURE", deptDate);
