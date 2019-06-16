@@ -1,8 +1,10 @@
 package com.andia.loice.flighttracker.viewmodel;
 
 import com.andia.loice.flighttracker.dagger.scheduler.SchedulerManager;
-import com.andia.loice.flighttracker.model.api.FlightScheduleRepo;
-import com.andia.loice.flighttracker.model.data.FlightSchedule.ScheduleResource;
+import com.andia.loice.flighttracker.model.api.ApiService;
+import com.andia.loice.flighttracker.model.data.FlightSchedule.Schedule;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -12,26 +14,24 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class FlightScheduleListViewModel extends ViewModel {
 
-    private FlightScheduleRepo flightScheduleRepo;
+    private ApiService apiService;
     private SchedulerManager schedulerMngr;
 
-    private MutableLiveData<ScheduleResource> flightSchedules = new MutableLiveData<>();
+    private MutableLiveData<List<Schedule>> flightSchedules = new MutableLiveData<>();
     private CompositeDisposable disposableManager = new CompositeDisposable();
 
     @Inject
-    FlightScheduleListViewModel(SchedulerManager schedulerMngr, FlightScheduleRepo flightScheduleRepo) {
-        this.flightScheduleRepo = flightScheduleRepo;
+    FlightScheduleListViewModel(SchedulerManager schedulerMngr, ApiService apiService) {
+        this.apiService = apiService;
         this.schedulerMngr = schedulerMngr;
     }
 
-    public MutableLiveData<ScheduleResource> getFlightSchedule() {
-        if (flightSchedules.getValue() == null) {
-//            disposableManager.add()
-////                    flightScheduleRepo.()
-////                            .subscribeOn(schedulerMngr.getIoScheduler())
-////                            .observeOn(schedulerMngr.getMainThreadScheduler())
-////                            .subscribe(this.movies::setValue);
-//            ;
+    public MutableLiveData<List<Schedule>> getFlightSchedule(String url) {
+        if (flightSchedules == null) {
+            disposableManager.add(
+                    apiService.getFlightSchedules(url)
+                            .subscribeOn(schedulerMngr.getIoScheduler())
+                            .subscribe(response -> flightSchedules.setValue(response.getSchedule())));
         }
         return flightSchedules;
     }

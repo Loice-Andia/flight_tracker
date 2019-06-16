@@ -1,7 +1,10 @@
 package com.andia.loice.flighttracker.view.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -118,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
                         R.string.empty_text_prompt,
                         Snackbar.LENGTH_LONG)
                         .show();
-            } else {
-                Intent intent = new Intent(MainActivity.this, FlightListActivity.class);
+            } else if (isNetworkAvailable(this)) {
+                Intent intent = new Intent(this, FlightListActivity.class);
                 intent.putExtra("SOURCE", source);
-                intent.putExtra("DESt", dest);
+                intent.putExtra("DEST", dest);
                 intent.putExtra("DEPARTURE", deptDate);
                 intent.putExtra("RETURN", retnDate);
                 startActivity(intent);
@@ -133,5 +136,12 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         editText.setText(sdf.format(calendar.getTime()));
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

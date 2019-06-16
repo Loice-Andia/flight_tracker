@@ -7,8 +7,6 @@ import com.andia.loice.flighttracker.dagger.scheduler.IoScheduler;
 import com.andia.loice.flighttracker.dagger.scheduler.MainScheduler;
 import com.andia.loice.flighttracker.dagger.scheduler.SchedulerManager;
 import com.andia.loice.flighttracker.dagger.scheduler.SchedulerMngrImpl;
-import com.andia.loice.flighttracker.model.api.ApiService;
-import com.andia.loice.flighttracker.model.api.FlightScheduleRepo;
 
 import javax.inject.Singleton;
 
@@ -47,13 +45,6 @@ public class AppModule {
     SchedulerManager provideSchedulerManager(@NonNull @MainScheduler final Scheduler mainThreadScheduler,
                                              @NonNull @IoScheduler final Scheduler ioScheduler) {
         return new SchedulerMngrImpl(mainThreadScheduler, ioScheduler);
-    }
-
-    @Provides
-    @Reusable
-    FlightScheduleRepo providesFlightScheduleRepo(@NonNull ApiService apiService,
-                                                  @NonNull SchedulerManager schedulerMngr) {
-        return new FlightScheduleRepo(apiService, schedulerMngr);
     }
 
 }
