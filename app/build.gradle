@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "api_key", api_key)
     }
     dataBinding {
         enabled true
@@ -30,6 +31,7 @@ dependencies {
     def room_version = "2.1.0-rc01"
     def lifecycle_version = "2.0.0"
     def dagger_version = "2.23.1"
+    def retrofit_version = "2.6.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
@@ -37,13 +39,16 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
     //okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.0.0-RC1'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.0.0-RC1"
 
     //Dagger2
     implementation "com.google.dagger:dagger-android:$dagger_version"

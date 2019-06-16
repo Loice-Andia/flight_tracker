@@ -1,5 +1,5 @@
 
-package com.andia.loice.flighttracker.model.data;
+package com.andia.loice.flighttracker.model.data.FlightSchedule;
 
 import com.google.gson.annotations.SerializedName;
 
