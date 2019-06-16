@@ -1,5 +1,7 @@
 package com.andia.loice.flighttracker;
 
+import com.andia.loice.flighttracker.dagger.DaggerAppComponent;
+
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 

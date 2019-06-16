@@ -4,4 +4,9 @@
     <string name="from">FROM</string>
     <string name="to">TO</string>
     <string name="sample_date">30-05-2019</string>
+    <string name="empty_text_prompt">Fill the source Airport, Destination Airport and Travel Date</string>
+    <string name="default_price">From\n1000</string>
+    <string name="default_airline">KLM . 10h 20m</string>
+    <string name="default_operator">Operated by KLM</string>
+    <string name="default_time">20:45\nNBO</string>
 </resources>

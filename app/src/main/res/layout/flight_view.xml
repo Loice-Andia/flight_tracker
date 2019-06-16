@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/airline_photo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="TODO"
+            app:layout_constraintBottom_toTopOf="@id/dept_time"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/marketing_carrier"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/marketing_carrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_airline"
+            app:layout_constraintBottom_toTopOf="@id/operation_carrier"
+            app:layout_constraintLeft_toRightOf="@id/airline_photo"
+            app:layout_constraintRight_toLeftOf="@id/price"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/operation_carrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_operator"
+            app:layout_constraintLeft_toRightOf="@id/airline_photo"
+            app:layout_constraintRight_toLeftOf="@id/price"
+            app:layout_constraintTop_toBottomOf="@id/marketing_carrier" />
+
+        <TextView
+            android:id="@+id/dept_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_time"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/stops"
+            app:layout_constraintTop_toBottomOf="@id/airline_photo" />
+
+        <TextView
+            android:id="@+id/stops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/dept_time"
+            app:layout_constraintRight_toLeftOf="@id/arrival_time"
+            app:layout_constraintTop_toBottomOf="@id/operation_carrier" />
+
+        <TextView
+            android:id="@+id/arrival_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_time"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/stops"
+            app:layout_constraintRight_toLeftOf="@id/price"
+            app:layout_constraintTop_toBottomOf="@id/operation_carrier" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_price"
+            android:textAlignment="viewEnd"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

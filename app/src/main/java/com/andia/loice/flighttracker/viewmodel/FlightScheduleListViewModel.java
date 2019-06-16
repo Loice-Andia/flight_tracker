@@ -26,12 +26,12 @@ public class FlightScheduleListViewModel extends ViewModel {
 
     public MutableLiveData<ScheduleResource> getFlightSchedule() {
         if (flightSchedules.getValue() == null) {
-            disposableManager.add()
-//                    flightScheduleRepo.()
-//                            .subscribeOn(schedulerMngr.getIoScheduler())
-//                            .observeOn(schedulerMngr.getMainThreadScheduler())
-//                            .subscribe(this.movies::setValue);
-            ;
+//            disposableManager.add()
+////                    flightScheduleRepo.()
+////                            .subscribeOn(schedulerMngr.getIoScheduler())
+////                            .observeOn(schedulerMngr.getMainThreadScheduler())
+////                            .subscribe(this.movies::setValue);
+//            ;
         }
         return flightSchedules;
     }
