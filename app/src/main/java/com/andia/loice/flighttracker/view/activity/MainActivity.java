@@ -11,6 +11,9 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.andia.loice.flighttracker.R;
 import com.andia.loice.flighttracker.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,8 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         returnDate = activityMainBinding.returnDate;
         submitBtn = activityMainBinding.submitBtn;
 
+        Timber.plant(new Timber.DebugTree());
+
         initListeners();
 
     }
@@ -58,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         };
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         sourceAirport.addTextChangedListener(new TextWatcher() {
             @Override
@@ -102,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH))
                     .show();
-            updateLabel(travelDate);
+            travelDate.setText(sdf.format(calendar.getTime()));
+
         });
 
         returnDate.setOnClickListener(v -> {
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH))
                     .show();
-            updateLabel(returnDate);
+            returnDate.setText(sdf.format(calendar.getTime()));
         });
 
         submitBtn.setOnClickListener(v -> {
@@ -123,19 +131,13 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             } else if (isNetworkAvailable(this)) {
                 Intent intent = new Intent(this, FlightListActivity.class);
-                intent.putExtra("SOURCE", source);
-                intent.putExtra("DEST", dest);
-                intent.putExtra("DEPARTURE", deptDate);
-                intent.putExtra("RETURN", retnDate);
+                intent.putExtra("SOURCE", sourceAirport.getText().toString());
+                intent.putExtra("DEST", destAirport.getText().toString());
+                intent.putExtra("DEPARTURE", travelDate.getText().toString());
+                intent.putExtra("RETURN", returnDate.getText().toString());
                 startActivity(intent);
             }
         });
-    }
-
-    private void updateLabel(EditText editText) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-
-        editText.setText(sdf.format(calendar.getTime()));
     }
 
     public boolean isNetworkAvailable(Context context) {

@@ -10,6 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "api_key", api_key)
+        buildConfigField("String", "secret", api_secret)
     }
     dataBinding {
         enabled true
@@ -62,6 +63,9 @@ dependencies {
     //rxjava 2
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"

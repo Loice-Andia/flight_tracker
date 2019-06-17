@@ -4,15 +4,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.andia.loice.flighttracker.R;
 import com.andia.loice.flighttracker.databinding.FlightViewBinding;
 import com.andia.loice.flighttracker.model.data.FlightSchedule.Schedule;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.ViewHolder> {
 
@@ -25,14 +26,14 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.flight_view, parent, false);
-        return new ViewHolder(root);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new ViewHolder(inflater.inflate(R.layout.flight_view, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Schedule schedule = scheduleResource.get(position);
+        Timber.d("schhedule %s", schedule.toString());
         holder.binding.marketingCarrier.setText(schedule.getFlight().getMarketingCarrier().getAirlineID());
         holder.binding.operationCarrier.setText(String.format("Operated by {}",
                 schedule.getFlight().getOperatingCarrier().getAirlineID()));
@@ -51,13 +52,10 @@ public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        View view;
         private FlightViewBinding binding;
 
         ViewHolder(View itemView) {
             super(itemView);
-            view = itemView;
-            binding = DataBindingUtil.bind(view);
         }
     }
 }

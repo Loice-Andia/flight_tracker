@@ -1,7 +1,7 @@
 package com.andia.loice.flighttracker.model.api;
 
-import com.andia.loice.flighttracker.BuildConfig;
 import com.andia.loice.flighttracker.utils.Constants;
+import com.andia.loice.flighttracker.view.activity.FlightListActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 /**
  * Factory class that provides Retrofit, LoggingInteceptor , OkHttpClient
@@ -38,6 +39,7 @@ public class ApiServiceFactory {
     public HttpLoggingInterceptor provideLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new
                 HttpLoggingInterceptor();
+        Timber.d(HttpLoggingInterceptor.Level.BODY.toString());
         interceptor.level(HttpLoggingInterceptor.Level.BODY);
 
         return interceptor;
@@ -49,12 +51,15 @@ public class ApiServiceFactory {
      * @return
      */
     private Interceptor getQueryParamsInterceptor() {
+        String token = FlightListActivity.token;
+
+
+        Timber.d("token %s", token);
+
         return chain -> {
             Request original = chain.request();
             HttpUrl url = original.url();
-            HttpUrl newUrl = url.newBuilder()
-                    .addQueryParameter("api_key", BuildConfig.api_key)
-                    .build();
+            HttpUrl newUrl = url.newBuilder().build();
             Request.Builder builder = original.newBuilder().url(newUrl);
             Request request = builder.build();
             return chain.proceed(request);

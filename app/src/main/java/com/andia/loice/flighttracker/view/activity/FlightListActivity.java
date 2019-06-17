@@ -5,16 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.andia.loice.flighttracker.R;
-import com.andia.loice.flighttracker.databinding.ActivityFlightListBinding;
-import com.andia.loice.flighttracker.model.data.FlightSchedule.Schedule;
-import com.andia.loice.flighttracker.view.adapter.FlightListAdapter;
-import com.andia.loice.flighttracker.viewmodel.FlightScheduleListViewModel;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -22,7 +12,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.andia.loice.flighttracker.R;
+import com.andia.loice.flighttracker.databinding.ActivityFlightListBinding;
+import com.andia.loice.flighttracker.model.data.AccessToken;
+import com.andia.loice.flighttracker.model.data.FlightSchedule.Schedule;
+import com.andia.loice.flighttracker.view.adapter.FlightListAdapter;
+import com.andia.loice.flighttracker.viewmodel.FlightScheduleListViewModel;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerAppCompatActivity;
+import timber.log.Timber;
 
 import static com.andia.loice.flighttracker.utils.Constants.BASE_URL;
 
@@ -37,6 +41,7 @@ public class FlightListActivity extends DaggerAppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private FlightListAdapter flightListAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,25 +64,55 @@ public class FlightListActivity extends DaggerAppCompatActivity {
         String deptDate = intent.getStringExtra("DEPARTURE");
         String retnDate = intent.getStringExtra("RETURN");
 
-        String url = String.format("{}/operations/schedules/{}/{}/{}", BASE_URL, source, dest, deptDate);
+        String url = String.format("%soperations/schedules/%s/%s/%s", BASE_URL, source, dest, deptDate);
 
-        fetchFlights(url);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+                RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        getToken(url);
 
     }
 
-    private void fetchFlights(String url) {
-        final Observer<List<Schedule>> flightsObserver = results -> {
-            displayFlights(results);
+    private void getToken(String url) {
+        Timber.d("get token");
+        final Observer<AccessToken> tokenObserver = results -> {
+
+            Timber.d(results.toString());
+            if (results == null) {
+                Snackbar.make(recyclerView,
+                        "Access token not received",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+            } else {
+                fetchFlights(url, results.getAccessToken());
+            }
             progressBar.setVisibility(View.GONE);
         };
-        flightScheduleListViewModel.getFlightSchedule(url).observe(this, flightsObserver);
+        flightScheduleListViewModel.getToken().observe(this, tokenObserver);
+    }
+
+
+    private void fetchFlights(String url, String token) {
+        Timber.d("Fetchhing flights");
+        final Observer<List<Schedule>> flightsObserver = results -> {
+
+            Timber.d(results.toString());
+            if (results == null) {
+                Snackbar.make(recyclerView,
+                        "No flights found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+            } else {
+                displayFlights(results);
+            }
+            progressBar.setVisibility(View.GONE);
+        };
+        flightScheduleListViewModel.getFlightSchedule(url, token).observe(this, flightsObserver);
     }
 
     private void displayFlights(List<Schedule> results) {
         flightListAdapter = new FlightListAdapter(results);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-                RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(flightListAdapter);
         flightListAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
